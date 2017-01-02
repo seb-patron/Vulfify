@@ -39,20 +39,66 @@ $("#darkred").click(function() {
     canvas.renderAll();
 });
 
-
 var canvas = new fabric.Canvas('canvas', {
   backgroundColor: '#D98F84',
 });
 
+//on page load inits base image
+window.onload = init;
+
+
+//commented out jquery, wrote my own eventListener function in vanilla js
+
 // input range listener
-$(document).on('input', '#slider', function() {
-    $('#slider_value').html( $(this).val());
+// $(document).on('input', '#slider', function() {
+//     $('#slider_value').html( $(this).val());
+//     canvas.clear();
+//     updateImages(this.value);
 
-});
+// });
 
+function init() {
+    fabric.Image.fromURL(path, function(img) {
+        var x = 100;
+        var img = img.scale(0.8);
+        img.set("left", x);
+        //alert("X value is" + x);
+        img.set("top", 100);
+        img.selectable = false;
+        canvas.add(img);
+    });
+}
+
+
+const slider__value = document.querySelector("#slider");
+
+slider__value.addEventListener('change', updateImages);
+slider__value.addEventListener('mousemove', updateImages);
 // hardcoded for 3, create some sort of for loop that pulls from input range?
 
 var path = 'img/transp_antwaun.png';
+
+//Adds image to canvas and repeats enterred amount
+function updateImages() {
+    canvas.clear();
+    const imgArray = [];
+    for (var i = 0; i < this.value; i++) {
+        imgArray.push(path);
+    }
+
+    imgArray.forEach((image, index) => {
+        fabric.Image.fromURL(image, function(img) {
+            var x = 100 + (15 * index);
+            console.log("index value is: " + index);
+            var img = img.scale(0.8);
+            img.set("left", x);
+            //alert("X value is" + x);
+            img.set("top", 100);
+            img.selectable = false;
+            canvas.add(img);
+        });
+    });
+}
 
 
 // fabric.Image.fromURL(path, function(img) {
@@ -71,18 +117,20 @@ var path = 'img/transp_antwaun.png';
 // 
 // });
 
-for (var i = 0; i < 3; i++) {
-  fabric.Image.fromURL(path, function(img) {
-    var x = 100 + (15 * i);
-    // console.log("The x value is:" + x);
-    var img = img.scale(0.8);
-    img.set("left", x);
-    alert("X value is" + x);
-    img.set("top", 100);
-    img.selectable = false;
-    canvas.add(img);
-  });
-}
+// fabric.Image.fromURL(path, function(img) {
+//         // let x = varX;
+//     for (var i = 0; i < 3; i++) {
+//         var x = 100 + (15 * i);
+//         console.log("The x value is:" + x);
+//         var img = img.scale(0.8);
+//         img.set("left", x);
+//         alert("X value is" + x);
+//         img.set("top", 100);
+//         img.selectable = false;
+//         canvas.add(img);
+//     }
+// });
+
 
 
 
